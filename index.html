@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>BibTeX generator</title>
+    <meta name="description" content="BibTeX generator using Citation.js">
+    <script src="bundle.js" charset="utf-8"></script>
+    <script src="main.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="main.css">
+  </head>
+  <body>
+
+    <main>
+
+      <h1>BibTeX generator</h1>
+      <p>
+        Generate BibTeX using <a href="https://citation.js.org">Citation.js</a>.
+        Supported input formats:
+      </p>
+
+      <ul>
+        <li>DOI</li>
+        <li>ISBN</li>
+        <li>PubMed (with <code>pmid:</code> prefix) & PMC IDs</li>
+        <li>ORCID</li>
+        <li>GitHub & npm URLs</li>
+        <li>Wikidata items</li>
+      </ul>
+
+      <form id="form">
+        <fieldset>
+          <legend>Generate BibTeX</legend>
+
+          <label for="ids">Identifiers (separate with newlines)</label>
+          <textarea name="ids" spellcheck="false"></textarea>
+
+          <button type="submit" name="generate">Generate</button>
+
+          <label for="bibtex">BibTeX output</label>
+          <output>
+            <textarea id="bibtex" name="bibtex" readonly="true"></textarea>
+          </output>
+        </fieldset>
+      </form>
+
+    </main>
+
+  </body>
+</html>
