@@ -2238,13 +2238,10 @@ let userAgent = `Citation.js/${_package.version} Node.js/${process.version}`;
 
 function normaliseHeaders(headers) {
   const result = {};
+  const entries = headers instanceof Headers || headers instanceof _syncFetch.default.Headers ? Array.from(headers) : Object.entries(headers);
 
-  if (headers instanceof Headers || headers instanceof _syncFetch.default.Headers) {
-    return Object.assign(result, headers.raw());
-  }
-
-  for (let header in headers) {
-    result[header.toLowerCase()] = [].concat(headers[header]);
+  for (let [name, header] of entries) {
+    result[name.toLowerCase()] = header.toString();
   }
 
   return result;
@@ -2253,7 +2250,7 @@ function normaliseHeaders(headers) {
 function parseOpts(opts = {}) {
   const reqOpts = {
     headers: {
-      accept: ['*/*']
+      accept: '*/*'
     },
     method: 'GET',
     checkContentType: opts.checkContentType
@@ -2282,8 +2279,8 @@ function sameType(request, response) {
     return true;
   }
 
-  const [a, b] = response['content-type'][0].split(';')[0].split('/');
-  return request.accept.reduce((array, header) => array.concat(header.split(/\s*,\s*/)), []).map(type => type.split(';')[0].split('/')).find(([c, d]) => (c === a || c === '*') && (d === b || d === '*'));
+  const [a, b] = response['content-type'].split(';')[0].trim().split('/');
+  return request.accept.split(',').map(type => type.split(';')[0].trim().split('/')).some(([c, d]) => (c === a || c === '*') && (d === b || d === '*'));
 }
 
 function checkResponse(response, opts) {
@@ -2790,30 +2787,30 @@ Translator.CONVERT_TO_SOURCE = Symbol('convert to source');
 Translator.CONVERT_TO_TARGET = Symbol('convert to target');
 },{}],42:[function(require,module,exports){
 module.exports={
-  "_from": "@citation-js/core@0.5.0-alpha.3",
-  "_id": "@citation-js/core@0.5.0-alpha.3",
+  "_from": "@citation-js/core@0.5.0-alpha.4",
+  "_id": "@citation-js/core@0.5.0-alpha.4",
   "_inBundle": false,
-  "_integrity": "sha512-d0Edt9ppFJbjDGfmwYb49SP0Y8F7BqiejU1cZyC5Kh9ls06r2vAp893uBoGNaYZCtSRZXtDbIO42MdYmoWMKEQ==",
+  "_integrity": "sha512-F7C4LHQs6PXnUPQO/YENpGvpSVb+EJ6uFzKN2Z+Qst0rWYJj2c20jKB4mZYuQh4MBMO9f7L1m2Uq8u5P0jdZKA==",
   "_location": "/@citation-js/core",
   "_phantomChildren": {},
   "_requested": {
     "type": "version",
     "registry": true,
-    "raw": "@citation-js/core@0.5.0-alpha.3",
+    "raw": "@citation-js/core@0.5.0-alpha.4",
     "name": "@citation-js/core",
     "escapedName": "@citation-js%2fcore",
     "scope": "@citation-js",
-    "rawSpec": "0.5.0-alpha.3",
+    "rawSpec": "0.5.0-alpha.4",
     "saveSpec": null,
-    "fetchSpec": "0.5.0-alpha.3"
+    "fetchSpec": "0.5.0-alpha.4"
   },
   "_requiredBy": [
     "#DEV:/",
     "#USER"
   ],
-  "_resolved": "https://registry.npmjs.org/@citation-js/core/-/core-0.5.0-alpha.3.tgz",
-  "_shasum": "83d0ad0ddeac5a9b87d12b9dc7bb2d3d16f968d8",
-  "_spec": "@citation-js/core@0.5.0-alpha.3",
+  "_resolved": "https://registry.npmjs.org/@citation-js/core/-/core-0.5.0-alpha.4.tgz",
+  "_shasum": "ecf6f9bdb4bc837fe21a5473cfea706105786fbe",
+  "_spec": "@citation-js/core@0.5.0-alpha.4",
   "_where": "/home/larsgw/Projects/Citation.js/bundle-tool",
   "author": {
     "name": "Lars Willighagen",
@@ -2845,7 +2842,7 @@ module.exports={
     "lib",
     "lib-mjs"
   ],
-  "gitHead": "dacc48b278edbb7ea6be4415366a4ffc4d9e85a9",
+  "gitHead": "3a1b202926a31e69a0b48ad0ffcd3e28b3035769",
   "homepage": "https://citation.js.org/",
   "keywords": [
     "citation-js",
@@ -2863,7 +2860,7 @@ module.exports={
   "scripts": {
     "test": "mocha -c -R dot test/*.spec.js"
   },
-  "version": "0.5.0-alpha.3"
+  "version": "0.5.0-alpha.4"
 }
 
 },{}],43:[function(require,module,exports){
@@ -4051,7 +4048,9 @@ const bibtexGrammar = new _core.util.Grammar({
     this.consumeRule('_');
     const closeBrace = this.consumeToken('rbrace');
 
-    if (closeBrace !== delimiters[openBrace]) {}
+    if (closeBrace !== delimiters[openBrace]) {
+      _core.logger.warn('[plugin-bibtex]', `entry started with "${openBrace}", but ends with "${closeBrace}"`);
+    }
 
     return result;
   },
@@ -4383,7 +4382,7 @@ const getBibTeXJSON = function (src, opts) {
     props.pages = src.page.replace('-', '--');
   }
 
-  if (src.issued) {
+  if (src.issued && src.issued['date-parts']) {
     let dateParts = src.issued['date-parts'][0];
 
     if (dateParts.length > 0) {
