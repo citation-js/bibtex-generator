@@ -5430,7 +5430,8 @@ const formats = {
   },
   '@orcid/record': {
     parse(record) {
-      return record['external-ids']['external-id'].find(id => id['external-id-type'] === 'doi')['external-id-value'];
+      const doi = record['external-ids']['external-id'].find(id => id['external-id-type'] === 'doi');
+      return doi ? doi['external-id-value'] : null;
     },
 
     parseType: {
