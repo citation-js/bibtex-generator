@@ -37,11 +37,13 @@
           <textarea name="ids" spellcheck="false"></textarea>
 
           <button type="submit" name="generate">Generate</button>
-
+          
           <label for="bibtex">BibTeX output</label>
           <output>
             <textarea id="bibtex" name="bibtex" readonly="true"></textarea>
           </output>
+          
+          <button id="copy-clipboard">Copy to Clipboard</button>
         </fieldset>
       </form>
 
@@ -60,5 +62,17 @@
       </ul>
     </footer>
 
+    <script>
+      document.getElementById("copy-clipboard").addEventListener("click", () => {
+        const bibtex = document.getElementById("bibtex");   // retrieve text field element
+        bibtex.select();                                    // select text field
+        bibtex.setSelectionRange(0, 99999);                 // for mobile devices
+        // console.log("copied to clipboard");
+        
+        // alert(bibtex.textContent);
+        navigator.clipboard.writeText(bibtex.value);        // copy text to clipboard
+
+      })
+    </script>
   </body>
 </html>
