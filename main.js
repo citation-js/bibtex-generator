@@ -23,5 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
       })
   })
 
+  document.getElementById('copy').addEventListener('click', () => {
+    navigator.clipboard.writeText(bibtex.value)
+  })
+
   document.getElementById('version').textContent = ', version v' + version
 })
