@@ -22,4 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
         bibtex.textContent = error.message
       })
   })
+
+  document.getElementById('copy').addEventListener('click', () => {
+    navigator.clipboard.writeText(bibtex.value)
+  })
 })
