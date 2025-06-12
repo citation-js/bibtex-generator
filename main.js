@@ -3,7 +3,7 @@ const { Cite, util, version } = require('citation-js')
 util.setUserAgent(null)
 
 async function generate (ids) {
-  return (await Cite.async(ids.split('\n'))).format('bibtex', { format: 'text' })
+  return (await Cite.async(ids.trim().split('\n'))).format('bibtex', { format: 'text' })
 }
 
 document.addEventListener('DOMContentLoaded', () => {
