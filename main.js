@@ -1,4 +1,4 @@
-const { Cite, util } = require('citation-js')
+const { Cite, util, version } = require('citation-js')
 
 util.setUserAgent(null)
 
@@ -22,4 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
         bibtex.textContent = error.message
       })
   })
+
+  document.getElementById('version').textContent = ', version v' + version
 })
