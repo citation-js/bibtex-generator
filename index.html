@@ -33,17 +33,25 @@
         <fieldset>
           <legend>Generate BibTeX</legend>
 
-          <label for="ids">Identifiers (separate with newlines)</label>
-          <textarea id="ids" name="ids" spellcheck="false"></textarea>
+          <div>
+            <label for="ids">Identifiers (separate with newlines)</label>
+            <textarea id="ids" name="ids" spellcheck="false"></textarea>
+          </div>
 
-          <button type="submit" name="generate">Generate</button>
+          <div>
+            <button type="submit" name="generate">Generate</button>
+          </div>
 
-          <label for="bibtex">BibTeX output</label>
-          <output>
-            <textarea id="bibtex" name="bibtex" readonly="true"></textarea>
-          </output>
-          
-          <button id="copy">Copy</button>
+          <div>
+            <label for="bibtex">BibTeX output</label>
+            <output>
+              <textarea id="bibtex" name="bibtex" readonly="true"></textarea>
+            </output>
+          </div>
+
+          <div>
+            <button id="copy">Copy</button>
+          </div>
         </fieldset>
       </form>
 
